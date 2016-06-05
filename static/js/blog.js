@@ -17,3 +17,7 @@ $(".blog-post-meta time").each(function() {
     }
     return true;
 });
+
+$("#form").submit(function() {
+    $("#button").html('<i class="fa fa-spinner fa-spin"></i>').prop("disabled", true);
+});

@@ -4,8 +4,8 @@ block title
 block content
     div(class="jumbotron")
         p Enter a post permalink
-        form(method="get" action="/" enctype="application/x-www-form-urlencoded")
+        form(method="get" id="form" action="/" enctype="application/x-www-form-urlencoded")
             div(class="input-group")
                 input(type="text" class="form-control" id="url" name="url" placeholder="http://somesite/post/id")
                 span(class="input-group-btn")
-                    button(type="submit" class="btn btn-default") Go!
+                    button(type="submit" id="button" class="btn btn-default") Go!
