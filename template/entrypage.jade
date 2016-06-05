@@ -1,0 +1,5 @@
+extends ./page
+block title
+    = util.truncate(entry.name, 32) + ' - ' + site.config.title
+block content
+    include ./entry

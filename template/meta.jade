@@ -1,0 +1,13 @@
+p(class="blog-post-meta")
+    if !hideAuthor && entry.author != null
+        a(class="p-author h-card" href=entry.author.url)
+            if entry.author.photo != null
+                img(src=entry.author.photo)
+            = entry.author.name
+        |  - 
+    a(class="u-url" href=entry.url)
+        if entry.published != null
+            - var dateString = site.formatDate(entry.published);
+            time(class="dt-published" datetime=entry.published.toISOString() title=dateString)= dateString
+        else
+            = entry.url

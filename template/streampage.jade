@@ -1,0 +1,46 @@
+extends ./page
+block title
+    = site.config.title
+
+block navbar
+    div(class="collapse navbar-collapse")
+        ul(class="nav navbar-nav")
+            li(class="active")
+                a(href="/") Articles+Notes
+            li
+                a(href="/replies") Replies
+
+block content
+    div(class="h-feed")
+        a(class="u-author" href="/")
+        each entry in entries
+            include ./streamentry
+        ul(class="pager")
+            if page < totalPages
+                li
+                    a(href=site.getPathForIndex(page + 1) rel="previous") Older
+            if page > 1
+                li
+                    a(href=site.getPathForIndex(page - 1) rel="next") Newer
+
+block sidebar
+    div(class="sidebar-module sidebar-module-inset")
+        h4 About
+        div(class="h-card")
+            img(class="u-photo" src=site.config.author.photo)
+            a(class="p-name u-url u-uid" rel="me" href=site.config.url)= site.config.author.name
+            p(class="p-note")= site.config.author.note
+    div(class="sidebar-module")
+        h4 Recent articles
+        ul(class="list-unstyled")
+            each e in site.getArticles().slice(0, 5)
+                li
+                    a(href=e.url)= e.name
+            li
+                a(href="/articles") More...
+    div(class="sidebar-module")
+        h4 Elsewhere
+        ol(class="list-unstyled")
+            each e in site.config.author.elsewhere
+                li
+                    a(href=e.url rel="me")= e.name

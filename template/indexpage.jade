@@ -1,0 +1,13 @@
+extends ./page
+block title
+    = category + ' - ' + site.config.title
+block content
+    h2= category
+    ol(class="container-fluid h-feed list-unstyled")
+        each entry in entries
+            li(class="row h-cite")
+                - var dateString = site.formatDate(entry.published);
+                div(class="col-sm-3 blog-post-meta")
+                    time(class="dt-published" datetime=entry.published.toISOString() title=dateString)= dateString
+                div(class="col-sm-9")
+                    a(class="u-url p-name" href=entry.url)= util.truncate(entry.name, 64)
