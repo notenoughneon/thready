@@ -2,7 +2,6 @@
   "name": "thready",
   "version": "0.1.0",
   "description": "Indieweb thread reader",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
