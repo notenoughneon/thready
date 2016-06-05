@@ -14,7 +14,7 @@ mixin cite(entry, rootClass)
             |  liked this.
             a(class="u-url" href=entry.url)
                 if entry.published != null
-                    - var dateString = site.formatDate(entry.published);
+                    - var dateString = util.formatDate(entry.published);
                     time(class="dt-published" datetime=entry.published.toISOString() title=dateString)
 
         if entry.isRepost()
@@ -24,7 +24,7 @@ mixin cite(entry, rootClass)
             |  reposted this.
             a(class="u-url" href=entry.url)
                 if entry.published != null
-                    - var dateString = site.formatDate(entry.published);
+                    - var dateString = util.formatDate(entry.published);
                     time(class="dt-published" datetime=entry.published.toISOString() title=dateString)
 
         if !entry.isLike() && !entry.isRepost()

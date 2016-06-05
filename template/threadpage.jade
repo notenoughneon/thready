@@ -1,0 +1,7 @@
+include ./cite
+extends ./page
+block title
+    | Thready
+block content
+    each entry in thread
+        +cite(entry, '')

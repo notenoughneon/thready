@@ -7,7 +7,7 @@ p(class="blog-post-meta")
         |  - 
     a(class="u-url" href=entry.url)
         if entry.published != null
-            - var dateString = site.formatDate(entry.published);
+            - var dateString = util.formatDate(entry.published);
             time(class="dt-published" datetime=entry.published.toISOString() title=dateString)= dateString
         else
             = entry.url
