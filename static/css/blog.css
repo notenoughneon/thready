@@ -188,18 +188,6 @@ h1 a:hover {
 .blog-post-spacer {
   height: 20px;
 }
-.h-cite .blog-post {
-  color: #888;
-  font-size: 16px;
-}
-.h-cite .blog-post .blog-post-meta,
-.h-cite .blog-post .blog-post-title,
-.h-cite .blog-post .blog-post-meta .p-author,
-.h-cite .blog-post .blog-post-meta a,
-.h-cite .blog-post .blog-post-meta time
-{
-  color: #aaa;
-}
 .webmention-form {
   margin-bottom: 40px;
 }
