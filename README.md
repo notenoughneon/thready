@@ -3,6 +3,10 @@ Indieweb thread reader
 
 Demo for Indieweb Summit 2016 hack day.
 
+![screenshot](main.png "main page")
+
+![screenshot](thread.png "thread view")
+
 ## Quick start
 
 Requires node >= 4.0.
