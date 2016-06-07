@@ -11,11 +11,41 @@ app.set('views', './template');
 app.set('view engine', 'jade');
 app.use(express.static('static', {extensions: ['html']}));
 
+async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?: boolean) {
+    var boundary: string[] = [];
+    var seen: Set<string> = new Set();
+    var entries: Map<string, mfo.Entry> = new Map();
+    boundary.push(seed);
+    while (boundary.length > 0) {
+        let url = boundary.shift();
+        try {
+            seen.add(url);
+            let entry = await mfo.getEntryFromUrl(url, options);
+            entries.set(url, entry);
+            let references = entry.getChildren().map(c => c.url)
+                .concat(entry.getReferences());
+            for (let ref of references) {
+                if (!seen.has(ref)) {
+                    boundary.push(ref);
+                }
+            }
+        } catch (err) {
+            debug('Error fetching post: ' + err);
+            if (includeErr === true || includeErr === undefined) {
+                let entry = new mfo.Entry(url);
+                entry.content = {value: '[Error fetching post]', html: '[Error fetching post]'};
+                entries.set(url, entry);
+            }
+        }
+    }
+    return Array.from(entries.values());
+}
+
 app.get('/', async (req, res) => {
     try {
         if (req.query.url) {
             debug('%s %s', req.ip, req.query.url);
-            var thread = await mfo.getThreadFromUrl(req.query.url, {strategies: ['entry', 'event']}, false);
+            var thread = await getThreadFromUrl(req.query.url, {strategies: ['entry', 'event']}, false);
             thread = thread.filter(e => !e.isLike() && !e.isRepost());
             thread.sort(mfo.Entry.byDate);
             res.render('threadpage', {thread:thread, util: util});
