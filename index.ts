@@ -14,6 +14,7 @@ app.use(express.static('static', {extensions: ['html']}));
 app.get('/', async (req, res) => {
     try {
         if (req.query.url) {
+            debug('%s %s', req.ip, req.query.url);
             var thread = await mfo.getThreadFromUrl(req.query.url, {strategies: ['entry', 'event']}, false);
             thread = thread.filter(e => !e.isLike() && !e.isRepost());
             thread.sort(mfo.Entry.byDate);
