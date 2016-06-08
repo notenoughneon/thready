@@ -22,8 +22,11 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
         try {
             let entry = await mfo.getEntryFromUrl(url, options);
             entries.set(url, entry);
-            let references = entry.getChildren().map(c => c.url)
-                .concat(entry.getReferences());
+            let references = entry.getChildren()
+            .filter(c => !c.isLike() && !c.isRepost())
+            .map(c => c.url);
+            if (entry.isReply())
+                references.push(entry.replyTo.url);
             for (let ref of references) {
                 if (!seen.has(ref)) {
                     boundary.push(ref);
