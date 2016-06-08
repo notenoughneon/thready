@@ -16,7 +16,7 @@ git clone https://github.com/notenoughneon/thready.git
 npm install
 typings install
 tsc
-node build/index.js
+node build/index.js 8000
 ```
 
 Then point your browser at localhost:8000.

@@ -66,4 +66,7 @@ app.get('/', async (req, res) => {
 
 var server = http.createServer(app);
 
-server.listen(8000);
+server.listen(process.argv[2], function() {
+    var address = server.address();
+    debug('Listening on %s:%s', address.address, address.port);
+});
