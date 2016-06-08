@@ -11,5 +11,5 @@ mixin streamEntry(entry)
                 a(href=entry.url) More...
             else
                 - var contentClass = "e-content" + (entry.isArticle() ? '' : ' p-name');
-                div(class=contentClass)!= entry.content.html
+                div(class=contentClass)!= util.sanitize(entry.content.html)
             include ./citeactions

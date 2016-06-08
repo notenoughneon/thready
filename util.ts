@@ -1,6 +1,12 @@
 import fs = require('fs');
 import path = require('path');
 import url = require('url');
+import sanitizeHtml = require('sanitize-html');
+
+
+export function sanitize(html: string) {
+    return sanitizeHtml(html, {allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img'])});
+}
 
 export function promisify<T>(f: (cb: (err: NodeJS.ErrnoException, res: T) => void) => void): () => Promise<T>;
 export function promisify<A,T>(f: (arg: A, cb: (err: NodeJS.ErrnoException, res: T) => void) => void): (arg: A) => Promise<T>;
