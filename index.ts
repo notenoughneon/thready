@@ -29,6 +29,8 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
                 references.push(entry.replyTo.url);
             for (let ref of references) {
                 if (!seen.has(ref)) {
+                    if (seen.size > 25)
+                        throw new Error('Exceeded max thread size');
                     boundary.push(ref);
                     seen.add(ref);
                 }
