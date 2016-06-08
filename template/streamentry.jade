@@ -1,37 +1,10 @@
-include ./cite
-div(class="h-entry")
-
-    if entry.isReply()
-        i(class="fa fa-reply")
-        |  In reply to 
-        a(class="u-in-reply-to" href=entry.replyTo.url)= util.truncate(entry.replyTo.name, 70)
-
-    if entry.isLike()
-        i(class="fa fa-star")
-        |  
-        a(class="p-author h-card" href=entry.author.url)= entry.author.name
-        |  liked this.
-        a(class="u-url" href=entry.url)
-            if entry.published != null
-                - var dateString = site.formatDate(entry.published);
-                time(class="dt-published" datetime=entry.published.toISOString() title=dateString)
-
-    if entry.isRepost()
-        i(class="fa fa-retweet")
-        |  
-        a(class="p-author h-card" href=entry.author.url)= entry.author.name
-        |  reposted this.
-        a(class="u-url" href=entry.url)
-            if entry.published != null
-                - var dateString = site.formatDate(entry.published);
-                time(class="dt-published" datetime=entry.published.toISOString() title=dateString)
-
-    div(class="blog-post")
-        if !entry.isLike() && !entry.isRepost()
+mixin streamEntry(entry)
+    div(class="h-entry")
+        div(class="blog-post")
             if entry.isArticle()
                 h2(class="blog-post-title p-name")
                     a(href=entry.url)= entry.name
-            - var hideAuthor = true;
+            - var hideAuthor = false;
             include ./meta
             if entry.summary !== null
                 div(class="p-summary")= entry.summary
@@ -39,12 +12,4 @@ div(class="h-entry")
             else
                 - var contentClass = "e-content" + (entry.isArticle() ? '' : ' p-name');
                 div(class=contentClass)!= entry.content.html
-        if entry.isLike()
-            +cite(entry.likeOf, ' p-like-of')
-        if entry.isRepost()
-            +cite(entry.repostOf, ' p-repost-of')
-        if entry.embed != null
-            div(class="e-x-embed")!= entry.embed.html
-        include ./actions
-
-div(class="blog-post-spacer")
+            include ./citeactions
