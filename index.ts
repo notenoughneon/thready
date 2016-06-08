@@ -16,10 +16,10 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
     var seen: Set<string> = new Set();
     var entries: Map<string, mfo.Entry> = new Map();
     boundary.push(seed);
+    seen.add(seed);
     while (boundary.length > 0) {
         let url = boundary.shift();
         try {
-            seen.add(url);
             let entry = await mfo.getEntryFromUrl(url, options);
             entries.set(url, entry);
             let references = entry.getChildren().map(c => c.url)
@@ -27,6 +27,7 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
             for (let ref of references) {
                 if (!seen.has(ref)) {
                     boundary.push(ref);
+                    seen.add(ref);
                 }
             }
         } catch (err) {
