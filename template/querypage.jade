@@ -6,6 +6,6 @@ block content
         p Enter a post permalink
         form(method="get" id="form" action="/" enctype="application/x-www-form-urlencoded")
             div(class="input-group")
-                input(type="text" class="form-control input-lg" id="url" name="url" placeholder="http://somesite/post/id")
+                input(type="text" class="form-control input-lg" id="url" name="url" placeholder="http://somesite/post/id" required autofocus)
                 span(class="input-group-btn")
                     button(type="submit" id="button" class="btn btn-default input-lg") Go!
