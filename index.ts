@@ -51,7 +51,7 @@ app.get('/', async (req, res) => {
     try {
         if (req.query.url) {
             debug('%s %s', req.ip, req.query.url);
-            var thread = await getThreadFromUrl(req.query.url, {strategies: ['entry', 'event']}, false);
+            var thread = await getThreadFromUrl(req.query.url, {strategies: ['entry', 'event', 'oembed']}, false);
             thread = thread.filter(e => !e.isLike() && !e.isRepost());
             thread.sort(mfo.Entry.byDate);
             res.render('threadpage', {thread:thread, util: util});
