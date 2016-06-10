@@ -47,13 +47,19 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
     return Array.from(entries.values());
 }
 
+function _getTime(entry: mfo.Entry) {
+    if (entry.published != null)
+        return entry.published.getTime();
+    return Number.MAX_SAFE_INTEGER;
+}
+
 app.get('/', async (req, res) => {
     try {
         if (req.query.url) {
             debug('%s %s', req.ip, req.query.url);
             var thread = await getThreadFromUrl(req.query.url, {strategies: ['entry', 'event', 'oembed']}, false);
             thread = thread.filter(e => !e.isLike() && !e.isRepost());
-            thread.sort(mfo.Entry.byDate);
+            thread.sort((a, b) => _getTime(a) - _getTime(b));
             res.render('threadpage', {thread:thread, util: util});
         } else {
             res.render('querypage');
