@@ -11,7 +11,7 @@ app.set('views', './template');
 app.set('view engine', 'jade');
 app.use(express.static('static', {extensions: ['html']}));
 
-async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?: boolean) {
+async function getThreadFromUrl(seed: string) {
     var boundary: string[] = [];
     var seen: Set<string> = new Set();
     var entries: Map<string, mfo.Entry> = new Map();
@@ -20,7 +20,7 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
     while (boundary.length > 0) {
         let url = boundary.shift();
         try {
-            let entry = await mfo.getEntryFromUrl(url, options);
+            let entry = await mfo.getEntryFromUrl(url, {strategies: ['entry', 'event', 'oembed']});
             entries.set(url, entry);
             let references = entry.getChildren()
             .filter(c => !c.isLike() && !c.isRepost())
@@ -37,11 +37,9 @@ async function getThreadFromUrl(seed: string, options?: mfo.Options, includeErr?
             }
         } catch (err) {
             debug('Error fetching post: ' + err);
-            if (includeErr === true || includeErr === undefined) {
-                let entry = new mfo.Entry(url);
-                entry.content = {value: '[Error fetching post]', html: '[Error fetching post]'};
-                entries.set(url, entry);
-            }
+            // let entry = new mfo.Entry(url);
+            // entry.content = {value: '[Error fetching post]', html: '[Error fetching post]'};
+            // entries.set(url, entry);
         }
     }
     return Array.from(entries.values());
@@ -57,7 +55,7 @@ app.get('/', async (req, res) => {
     try {
         if (req.query.url) {
             debug('%s %s', req.ip, req.query.url);
-            var thread = await getThreadFromUrl(req.query.url, {strategies: ['entry', 'event', 'oembed']}, false);
+            var thread = await getThreadFromUrl(req.query.url);
             thread = thread.filter(e => !e.isLike() && !e.isRepost());
             thread.sort((a, b) => _getTime(a) - _getTime(b));
             res.render('threadpage', {thread:thread, util: util});
