@@ -20,8 +20,12 @@ async function getThreadFromUrl(seed: string) {
     while (boundary.length > 0) {
         let url = boundary.shift();
         try {
-            let entry = await mfo.getEntryFromUrl(url, {strategies: ['entry', 'event', 'oembed']});
+            let entry = await mfo.getEntryFromUrl(url, {strategies: ['entry', 'event']});
             entries.set(url, entry);
+            for (let child of entry.getChildren()) {
+                if (!entries.has(child.url))
+                    entries.set(child.url, child);
+            }
             let references = entry.getChildren()
             .filter(c => !c.isLike() && !c.isRepost())
             .map(c => c.url);
